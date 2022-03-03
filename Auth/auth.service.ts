@@ -1,0 +1,25 @@
+import User from "../User/user.model";
+import { CreateUserDto } from "./dto/createUser.dto";
+import { SignInDto } from "./dto/SignIn.dto";
+import bcrypt from "bcryptjs";
+import { findUserByUsername } from "../User/user.service";
+
+export const signUp = async (payload: CreateUserDto) => {
+  const user = await User.create(payload);
+
+  return user;
+};
+
+export const signIn = async (payload: SignInDto) => {
+  const user = await findUserByUsername(payload.username);
+  if (!user) {
+    throw new Error("Invalid username or password");
+  }
+  const isMatch = await bcrypt.compare(payload.password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Invalid username or password");
+  }
+
+  return user;
+};
