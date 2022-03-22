@@ -2,6 +2,8 @@ import User from "../User/user.model";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { SignInDto } from "./dto/SignIn.dto";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
 import { findUserByUsername } from "../User/user.service";
 
 export const signUp = async (payload: CreateUserDto) => {
@@ -21,5 +23,9 @@ export const signIn = async (payload: SignInDto) => {
     throw new Error("Invalid username or password");
   }
 
-  return user;
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
+    expiresIn: "100d",
+  });
+
+  return { user, token };
 };

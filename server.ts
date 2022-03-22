@@ -1,6 +1,10 @@
 import { app } from "./app";
 import mongoose from "mongoose";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 mongoose
   .connect("mongodb://localhost/halow")
   .then(() => {
@@ -10,6 +14,8 @@ mongoose
     console.log(err);
   });
 
-app.listen(5000, () => {
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
   console.log("app is running on port 5000");
 });
