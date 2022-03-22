@@ -5,8 +5,11 @@ import { Peer } from "./types/PeerType";
 import express from "express";
 import http from "http";
 
+import authRoutes from "./Auth/api";
+
 export const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -25,3 +28,5 @@ io.on("connection", (socket: any) => {
     socket.emit("join-room", room);
   });
 });
+
+app.use("/api/v1/auth", authRoutes);
