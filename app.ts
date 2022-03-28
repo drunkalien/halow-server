@@ -1,4 +1,4 @@
-import { createRoom, joinRoom } from "./Room/room.service";
+import { createRoom, findRoom, joinRoom } from "./Room/room.service";
 import { Server } from "socket.io";
 import { Peer } from "./types/PeerType";
 
@@ -26,6 +26,17 @@ io.on("connection", (socket: any) => {
   socket.on("join-room", async (roomId: number, peer: Peer) => {
     const room = await joinRoom(roomId, peer);
     socket.emit("join-room", room);
+  });
+
+  socket.on("get-all-users", async (roomId: number) => {
+    const room = await findRoom(roomId);
+
+    if (!room) {
+      socket.emit("invalid-room-id");
+      throw new Error("Invalid room id");
+    }
+
+    socket.emit("get-all-users", room.peers);
   });
 });
 

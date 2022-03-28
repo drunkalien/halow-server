@@ -22,3 +22,9 @@ export const joinRoom = async (roomId: number, peer: Peer) => {
   await room.save();
   return room;
 };
+
+export const findRoom = async (roomId: number) => {
+  const room = await Room.findOne({ roomId });
+
+  return room;
+};

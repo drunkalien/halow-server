@@ -5,3 +5,9 @@ export const findUserByUsername = async (username: string) => {
 
   return user;
 };
+
+export const findUser = async (id: string) => {
+  const user = await User.findById(id);
+
+  return user;
+};
