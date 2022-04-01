@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { findUser, findUserByUsername } from "./user.service";
+import { findUser, findUserByUsername, updateUser } from "./user.service";
 
 export const getUser = async (req: Request, res: Response) => {
   try {
@@ -25,6 +25,22 @@ export const getUserByUsername = async (req: Request, res: Response) => {
     const user = await findUserByUsername(username);
 
     res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      error,
+    });
+  }
+};
+
+export const updateUserById = async (req: Request, res: Response) => {
+  try {
+    const user = updateUser(req.params.id, req.body);
+
+    res.json({
       success: true,
       user,
     });

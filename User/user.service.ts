@@ -11,3 +11,13 @@ export const findUser = async (id: string) => {
 
   return user;
 };
+
+export const updateUser = async (id: string, payload: any) => {
+  const user = await User.findByIdAndUpdate(id, payload, { new: true });
+
+  if (!user) {
+    throw new Error("Invalid user");
+  }
+
+  return user;
+};
