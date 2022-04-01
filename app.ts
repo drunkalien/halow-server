@@ -38,6 +38,13 @@ io.on("connection", (socket: any) => {
 
     socket.emit("get-all-users", room.peers);
   });
+
+  socket.on("sending-signal", (payload: any) => {
+    io.to(payload.userToSignal).emit("user-joined", {
+      signal: payload.signal,
+      callerId: payload.callerId,
+    });
+  });
 });
 
 app.use("/api/v1/auth", authRoutes);
