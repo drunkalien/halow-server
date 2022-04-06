@@ -2,20 +2,20 @@ import { NextFunction, Request, Response } from "express";
 
 import { signIn as loginUser, signUp as createUser } from "./auth.service";
 import { verifyToken } from "../utils/verifyToken";
+import { ErrorHandler } from "../utils/errorHandler";
 
 export const signUp = async (req: Request, res: Response) => {
   try {
-    const user = await createUser(req.body);
+    const data = await createUser(req.body);
 
     res.status(201).json({
       success: true,
-      user,
+      data,
     });
-  } catch (error) {
-    res.json({
-      success: false,
-      error,
-    });
+  } catch (error: any) {
+    const resError = ErrorHandler.sendErrorMessage(error);
+
+    res.status(resError.status).json(resError);
   }
 };
 
