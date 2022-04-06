@@ -7,6 +7,7 @@ import express from "express";
 import http from "http";
 
 import authRoutes from "./Auth/api";
+import userRoutes from "./User/api";
 
 export const app = express();
 const server = http.createServer(app);
@@ -52,3 +53,4 @@ io.on("connection", (socket: any) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);

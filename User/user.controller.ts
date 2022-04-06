@@ -64,17 +64,11 @@ export const getCurrentUser = async (req: Request, res: Response) => {
       token = req.headers.authorization.split(" ")[1];
     }
     const user = await verifyToken(token);
-    if (!user) {
-      res.status(404).json({
-        success: false,
-        error: "User not found!",
-      });
 
-      res.status(200).json({
-        success: true,
-        user,
-      });
-    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
   } catch (error: any) {
     const resError = ErrorHandler.sendErrorMessage(error);
 
