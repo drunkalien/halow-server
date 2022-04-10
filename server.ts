@@ -49,6 +49,13 @@ io.on("connection", (socket: any) => {
       callerId: payload.callerId,
     });
   });
+
+  socket.on("returning-signal", (payload: any) => {
+    io.to(payload.callerId).emit("receiving-returned-signal", {
+      signal: payload.signal,
+      id: socket.id,
+    });
+  });
 });
 
 mongoose
