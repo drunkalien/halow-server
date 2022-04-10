@@ -8,6 +8,7 @@ export interface IRoom extends Document {
 }
 
 const RoomSchema = new Schema<IRoom>({
+  host: String,
   roomId: {
     type: Number,
     required: true,

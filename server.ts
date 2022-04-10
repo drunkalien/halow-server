@@ -18,20 +18,24 @@ const io = new Server(server, {
 io.listen(5001);
 
 io.on("connection", (socket: any) => {
-  socket.on("create-room", async (payload: Peer) => {
-    const room = await createRoom(payload);
-    socket.emit("create-room", room);
+  socket.on("create-room", async (username: string) => {
+    const room = await createRoom({ host: username });
+    socket.emit("create-room", room.roomId);
   });
 
-  socket.on("join-room", async (roomId: number, peer: Peer) => {
-    const room = await joinRoom(roomId, peer);
-    socket.emit("join-room", room);
-  });
+  socket.on(
+    "join-room",
+    async ({ roomId, peer }: { roomId: number; peer: Peer }) => {
+      const room = await joinRoom(roomId, peer);
+      socket.emit("join-room", room);
+    }
+  );
 
   socket.on("get-all-users", async (roomId: number) => {
     const room = await findRoom(roomId);
 
     if (!room) {
+      console.log(roomId);
       socket.emit("invalid-room-id");
       throw new Error("Invalid room id");
     }
