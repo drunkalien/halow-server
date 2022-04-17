@@ -58,8 +58,10 @@ io.on("connection", (socket: any) => {
   });
 });
 
+const DB = process.env.DB_URL || "mongodb://localhost/halow";
+
 mongoose
-  .connect("mongodb://localhost/halow")
+  .connect(DB)
   .then(() => {
     console.log("DB connection successful");
   })

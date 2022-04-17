@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
+    "install-packs": "npm install",
     "build": "tsc --project tsconfig.json",
     "start": "node dist/server.js"
   },
