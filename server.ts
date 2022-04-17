@@ -10,7 +10,7 @@ dotenv.config();
 
 const io = new Server(server, {
   cors: {
-    origin: "https://halow-client.vercel.app/",
+    origin: "*",
     methods: ["POST", "GET"],
   },
 });
