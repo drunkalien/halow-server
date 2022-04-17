@@ -10,7 +10,7 @@ export const app = express();
 export const server = http.createServer(app);
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://halow-client.vercel.app/" }));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
