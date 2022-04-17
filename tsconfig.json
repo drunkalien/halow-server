@@ -13,7 +13,11 @@
     "paths": {
       "*": [
         "node_modules/*",
+        "types"
       ]
     }
-  }
+  },
+  "include": [
+    "."
+  ]
 }
