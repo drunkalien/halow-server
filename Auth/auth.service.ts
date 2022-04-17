@@ -1,6 +1,6 @@
 import User from "../User/user.model";
 import { CreateUserDto } from "./dto/createUser.dto";
-import { SignInDto } from "./dto/SignIn.dto";
+import { SignInDto } from "./dto/signIn.dto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
