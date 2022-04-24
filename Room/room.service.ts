@@ -20,7 +20,7 @@ export const joinRoom = async (roomId: number, peer: Peer) => {
   const room = await Room.findOne({ roomId });
   if (!room) {
     console.log(roomId);
-    throw new Error("Invalid room id!");
+    return false;
   }
 
   room.peers.push(peer);

@@ -1,5 +1,5 @@
 export type Peer = {
-  peerid: string;
+  peerId: string;
   username: string;
   firstName: string;
   lastName: string;

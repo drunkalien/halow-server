@@ -1,12 +1,18 @@
 import { createRoom, findRoom, joinRoom } from "./Room/room.service";
 import { Server } from "socket.io";
 import { Peer } from "./types/PeerType";
-import { app, server } from "./app";
+import { app } from "./app";
 import mongoose from "mongoose";
 
 import dotenv from "dotenv";
 
 dotenv.config();
+
+const PORT = process.env.PORT;
+
+const server = app.listen(PORT, () => {
+  console.log("app is running on port", PORT);
+});
 
 const io = new Server(server, {
   cors: {
@@ -14,8 +20,6 @@ const io = new Server(server, {
     methods: ["POST", "GET"],
   },
 });
-
-io.listen(5001);
 
 io.on("connection", (socket: any) => {
   socket.on("create-room", async (username: string) => {
@@ -37,7 +41,7 @@ io.on("connection", (socket: any) => {
     if (!room) {
       console.log(roomId);
       socket.emit("invalid-room-id");
-      throw new Error("Invalid room id");
+      return;
     }
 
     socket.emit("get-all-users", room.peers);
@@ -56,6 +60,16 @@ io.on("connection", (socket: any) => {
       id: socket.id,
     });
   });
+
+  socket.on(
+    "leave-room",
+    async (payload: { roomId: number; peerId: string }) => {
+      const room = await findRoom(payload.roomId);
+      // @ts-ignore
+      room.peers = room?.peers.filter((peer) => payload.peerId != peer.peerId);
+      socket.emit("user-left", { peerId: payload.peerId });
+    }
+  );
 });
 
 const DB = process.env.DB_URL || "mongodb://localhost/halow";
@@ -68,7 +82,3 @@ mongoose
   .catch((err: any) => {
     console.log(err);
   });
-
-const PORT = process.env.PORT;
-
-app.listen(PORT, () => console.log("app is running on port", PORT));
