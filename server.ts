@@ -51,6 +51,7 @@ io.on("connection", (socket: any) => {
     io.to(payload.userToSignal).emit("user-joined", {
       signal: payload.signal,
       callerId: payload.callerId,
+      user: payload.currentUser,
     });
   });
 
@@ -61,15 +62,15 @@ io.on("connection", (socket: any) => {
     });
   });
 
-  socket.on(
-    "leave-room",
-    async (payload: { roomId: number; peerId: string }) => {
-      const room = await findRoom(payload.roomId);
-      // @ts-ignore
-      room.peers = room?.peers.filter((peer) => payload.peerId != peer.peerId);
-      socket.emit("user-left", { peerId: payload.peerId });
-    }
-  );
+  socket.on("leave", async (payload: { roomId: number; peerId: string }) => {
+    // console.log("ROOM ID", payload.roomId);
+    const room = await findRoom(payload.roomId);
+    console.log(room?.peers);
+    // @ts-ignore
+    room.peers = room?.peers.filter((peer) => payload.peerId != peer.peerId);
+    console.log("room peers", room?.peers);
+    socket.broadcast.emit("user-left", { peerId: payload.peerId });
+  });
 });
 
 const DB = process.env.DB_URL || "mongodb://localhost/halow";
